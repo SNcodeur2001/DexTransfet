@@ -40,8 +40,8 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
-# Generate Prisma client in production stage
-RUN npx prisma generate
+# Generate Prisma client and run migrations in production stage
+RUN npx prisma generate && npx prisma migrate deploy
 
 # Change ownership to nodejs user
 RUN chown -R nestjs:nodejs /app

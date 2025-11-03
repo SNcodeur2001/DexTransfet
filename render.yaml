@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: dexchange-api
+    runtime: docker
+    buildCommand: docker build -t dexchange-api .
+    startCommand: docker run -p $PORT:3000 dexchange-api
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: PORT
+        fromService:
+          type: web
+          property: port
+    healthCheckPath: /health
+    autoDeploy: true
