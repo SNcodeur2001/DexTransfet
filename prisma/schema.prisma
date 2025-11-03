@@ -1,0 +1,42 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Transfer {
+  id           String   @id @default(uuid())
+  reference    String   @unique
+  amount       Int
+  fees         Int
+  total        Int
+  currency     String
+  channel      String
+  status       String
+  recipient    Json
+  metadata     Json?
+  providerRef  String?
+  errorCode    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  audits       Audit[]
+}
+
+model Audit {
+  id          String   @id @default(uuid())
+  action      String
+  transferId  String?
+  details     Json?
+  createdAt   DateTime @default(now())
+  transfer    Transfer? @relation(fields: [transferId], references: [id])
+}
+
+model ApiKey {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
