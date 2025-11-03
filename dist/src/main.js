@@ -9,10 +9,17 @@ async function bootstrap() {
     app.useGlobalPipes(new common_1.ValidationPipe());
     const config = new swagger_1.DocumentBuilder()
         .setTitle('DEXCHANGE API')
-        .setDescription('API for managing money transfers')
+        .setDescription('A comprehensive API for managing money transfers with support for multiple channels and real-time processing. Perfect for integrating payment solutions into your applications.')
         .setVersion('1.0')
-        .addTag('transfers')
-        .addApiKey({ type: 'apiKey', name: 'x-api-key', in: 'header' }, 'api-key')
+        .addTag('transfers', 'Money transfer operations including creation, listing, processing, and cancellation')
+        .addApiKey({
+        type: 'apiKey',
+        name: 'x-api-key',
+        in: 'header',
+        description: 'API Key for authentication. Get your key from the admin panel.'
+    }, 'api-key')
+        .addServer('http://localhost:3000', 'Development server')
+        .addServer('https://your-render-app.onrender.com', 'Production server')
         .build();
     const document = swagger_1.SwaggerModule.createDocument(app, config);
     swagger_1.SwaggerModule.setup('docs', app, document);
