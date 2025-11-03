@@ -12,6 +12,9 @@ const client_1 = require("@prisma/client");
 let PrismaService = class PrismaService extends client_1.PrismaClient {
     async onModuleInit() {
         await this.$connect();
+        if (process.env.NODE_ENV === 'production') {
+            await this.$executeRaw `SELECT 1`;
+        }
     }
     async enableShutdownHooks(app) {
         process.on('beforeExit', async () => {

@@ -25,6 +25,19 @@ async function bootstrap() {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   });
 
+  // Run database migrations on startup in production
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🔄 Running database migrations...');
+    const { execSync } = require('child_process');
+    try {
+      execSync('npx prisma migrate deploy', { stdio: 'inherit' });
+      console.log('✅ Database migrations completed successfully');
+    } catch (error) {
+      console.error('❌ Database migration failed:', error.message);
+      // Don't exit the process, let the app start anyway
+    }
+  }
+
   await app.listen(process.env.PORT ?? 3000);
   console.log(`🚀 DEXCHANGE API running on: http://localhost:${process.env.PORT ?? 3000}`);
   console.log(`📚 Swagger docs available at: http://localhost:${process.env.PORT ?? 3000}/docs`);
