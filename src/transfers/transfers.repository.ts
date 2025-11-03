@@ -17,15 +17,20 @@ export class TransfersRepository {
     recipient: any;
     metadata?: any;
   }): Promise<TransferEntity> {
-    return this.prisma.transfer.create({ data });
+    return this.prisma.transfer.create({
+      data: {
+        ...data,
+        status: 'PENDING',
+      },
+    }) as any;
   }
 
   async findById(id: string): Promise<TransferEntity | null> {
-    return this.prisma.transfer.findUnique({ where: { id } });
+    return this.prisma.transfer.findUnique({ where: { id } }) as any;
   }
 
   async findByReference(reference: string): Promise<TransferEntity | null> {
-    return this.prisma.transfer.findUnique({ where: { reference } });
+    return this.prisma.transfer.findUnique({ where: { reference } }) as any;
   }
 
   async findMany(filter: FilterTransferDto): Promise<{ items: TransferEntity[]; nextCursor?: string }> {
@@ -60,13 +65,13 @@ export class TransfersRepository {
       items.pop();
     }
 
-    return { items, nextCursor };
+    return { items: items as any, nextCursor };
   }
 
   async updateStatus(id: string, status: string, providerRef?: string, errorCode?: string): Promise<TransferEntity> {
     return this.prisma.transfer.update({
       where: { id },
       data: { status, providerRef, errorCode },
-    });
+    }) as any;
   }
 }

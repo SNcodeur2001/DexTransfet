@@ -51,7 +51,7 @@ describe('TransfersService', () => {
     it('should calculate fees correctly (0.8% rounded up)', () => {
       const calculateFees = (service as any).calculateFees.bind(service);
 
-      expect(calculateFees(10000)).toBe(80); // 10000 * 0.008 = 80
+      expect(calculateFees(10000)).toBe(100); // 10000 * 0.008 = 80, but min 100
       expect(calculateFees(12500)).toBe(100); // 12500 * 0.008 = 100
       expect(calculateFees(1000)).toBe(100); // min 100
       expect(calculateFees(200000)).toBe(1500); // max 1500
