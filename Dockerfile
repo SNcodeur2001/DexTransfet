@@ -37,6 +37,7 @@ RUN npm ci --only=production && npm cache clean --force
 
 # Copy built application and Prisma files
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/dist/src ./dist
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
